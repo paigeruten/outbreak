@@ -1,4 +1,5 @@
 #include "main.h"
+#include "outbreak.h"
 
 int main(int argc, char * argv[]) {
   // initialize SDL
@@ -18,21 +19,8 @@ int main(int argc, char * argv[]) {
     exit(1);
   }
 
-  // main game loop
-  int quit = FALSE;
-  while (!quit) {
-    SDL_Event event;
-
-    while (SDL_PollEvent(&event)) {
-      switch(event.type) {
-        case SDL_QUIT:
-          quit = TRUE;
-          break;
-      }
-    }
-
-    SDL_Delay(1);
-  }
+  // enter the game
+  outbreak(screen);
 
   return 0;
 }
