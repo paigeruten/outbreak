@@ -1,6 +1,9 @@
 #include <stdlib.h>
 #include "SDL/SDL.h"
 
+#define TRUE 1
+#define FALSE 0
+
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
 #define SCREEN_BPP 8
@@ -24,7 +27,18 @@ int main(int argc, char * argv[]) {
   }
 
   // main game loop
-  while (1) {
+  int quit = FALSE;
+  while (!quit) {
+    SDL_Event event;
+
+    while (SDL_PollEvent(&event)) {
+      switch(event.type) {
+        case SDL_QUIT:
+          quit = TRUE;
+          break;
+      }
+    }
+
     SDL_Delay(1);
   }
 
