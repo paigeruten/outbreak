@@ -11,13 +11,19 @@
 
 #define PADDLE_COLOR COLOR_WHITE
 
+#define PADDLE_VELOCITY 2.5
+
 typedef struct {
   char * name;
-  SDL_Rect paddle;
+  float x;
+  float y;
+  float velocity_x;
+  int width, height;
 } Player;
 
-Player * make_player(const char * name, int x, int y, int width, int height);
+Player * make_player(const char * name, float x, float y, int width, int height);
 void destroy_player(Player * player);
+SDL_Rect paddle_rect(Player * player);
 
 #endif
 

@@ -4,7 +4,7 @@ outbreak: main.o outbreak.o palette.o player.o SDLMain.m
 main.o: main.c main.h palette.h outbreak.h player.h
 	gcc -c main.c -arch i386
 
-outbreak.o: outbreak.c outbreak.h main.h player.h palette.h
+outbreak.o: outbreak.c outbreak.h main.h player.h palette.h controls.h
 	gcc -c outbreak.c -arch i386
 
 palette.o: palette.c palette.h main.h
