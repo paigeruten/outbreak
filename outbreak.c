@@ -7,7 +7,7 @@ void outbreak(SDL_Surface * screen) {
   Outbreak outbreak;
   outbreak.screen = screen;
   outbreak.player = make_player("Jeremy", (float)SCREEN_WIDTH / 2.0f - (float)PADDLE_WIDTH / 2.0f, PADDLE_Y, PADDLE_WIDTH, PADDLE_HEIGHT);
-  outbreak.ball = make_ball((float)SCREEN_WIDTH / 2.0f - (float)BALL_WIDTH / 2.0f, (float)SCREEN_HEIGHT / 2.0f - (float)BALL_HEIGHT / 2.0f, BALL_WIDTH, BALL_HEIGHT);
+  outbreak.ball = make_ball(outbreak.player->x + (float)outbreak.player->width / 2.0f - (float)BALL_WIDTH / 2.0f, outbreak.player->y - BALL_HEIGHT - 1, BALL_WIDTH, BALL_HEIGHT);
   outbreak.quit = FALSE;
 
   outbreak.ball->velocity_x = BALL_VELOCITY;
