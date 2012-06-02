@@ -13,6 +13,18 @@ void outbreak(SDL_Surface * screen) {
   outbreak.ball->velocity_x = BALL_VELOCITY;
   outbreak.ball->velocity_y = BALL_VELOCITY;
 
+  outbreak.num_blocks = 0;
+
+  // make a simple wall-of-bricks level
+  int block_x;
+  int block_y;
+  for (block_y = BLOCKS_Y; block_y < BLOCKS_Y + (BLOCK_HEIGHT + BLOCK_SPACING) * BLOCK_ROWS && outbreak.num_blocks < MAX_BLOCKS; block_y += BLOCK_HEIGHT + BLOCK_SPACING) {
+    for (block_x = BLOCKS_X; block_x < SCREEN_WIDTH - BLOCK_WIDTH - BLOCKS_X && outbreak.num_blocks < MAX_BLOCKS; block_x += BLOCK_WIDTH + BLOCK_SPACING) {
+      outbreak.blocks[outbreak.num_blocks] = make_block(block_x, block_y, BLOCK_WIDTH, BLOCK_HEIGHT, BLOCK_COLOR);
+      outbreak.num_blocks++;
+    }
+  }
+
   while (!outbreak.quit) {
     handle_input(&outbreak);
     update_gamestate(&outbreak);
@@ -20,6 +32,13 @@ void outbreak(SDL_Surface * screen) {
 
     SDL_Delay(1);
   }
+
+  int i;
+  for (i = 0; i < outbreak.num_blocks; i++) {
+    destroy_block(outbreak.blocks[i]);
+    outbreak.blocks[i] = NULL;
+  }
+  outbreak.num_blocks = 0;
 
   destroy_ball(outbreak.ball);
   outbreak.ball = NULL;
@@ -106,6 +125,14 @@ void render(Outbreak * outbreak) {
   // draw paddle
   SDL_Rect paddle = paddle_rect(outbreak->player);
   SDL_FillRect(outbreak->screen, &paddle, PADDLE_COLOR);
+
+  // draw blocks
+  int i;
+  SDL_Rect block;
+  for (i = 0; i < outbreak->num_blocks; i++) {
+    block = block_rect(outbreak->blocks[i]);
+    SDL_FillRect(outbreak->screen, &block, outbreak->blocks[i]->color);
+  }
 
   // draw ball
   SDL_Rect ball = ball_rect(outbreak->ball);
