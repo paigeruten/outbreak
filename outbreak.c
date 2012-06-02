@@ -1,5 +1,6 @@
 #include "outbreak.h"
 #include "palette.h"
+#include "mathy.h"
 #include "controls.h"
 
 void outbreak(SDL_Surface * screen) {
@@ -85,6 +86,10 @@ void update_gamestate(Outbreak * outbreak) {
     outbreak->ball->velocity_y = -outbreak->ball->velocity_y;
   } else if (outbreak->ball->y > SCREEN_HEIGHT - outbreak->ball->height) {
     outbreak->ball->y = SCREEN_HEIGHT - outbreak->ball->height;
+    outbreak->ball->velocity_y = -outbreak->ball->velocity_y;
+  }
+
+  if (overlap(paddle_rect(outbreak->player), ball_rect(outbreak->ball))) {
     outbreak->ball->velocity_y = -outbreak->ball->velocity_y;
   }
 }
