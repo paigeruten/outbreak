@@ -78,6 +78,9 @@ void update_gamestate(Outbreak * outbreak) {
   } else if (outbreak->ball->x > SCREEN_WIDTH - outbreak->ball->width) {
     outbreak->ball->x = SCREEN_WIDTH - outbreak->ball->width;
     outbreak->ball->velocity_x = -outbreak->ball->velocity_x;
+  } else if (overlap(paddle_rect(outbreak->player), ball_rect(outbreak->ball))) {
+    outbreak->ball->x -= outbreak->ball->velocity_x;
+    outbreak->ball->velocity_x = -outbreak->ball->velocity_x;
   }
 
   outbreak->ball->y += outbreak->ball->velocity_y;
@@ -86,6 +89,9 @@ void update_gamestate(Outbreak * outbreak) {
     outbreak->ball->velocity_y = -outbreak->ball->velocity_y;
   } else if (outbreak->ball->y > SCREEN_HEIGHT - outbreak->ball->height) {
     outbreak->quit = TRUE;
+  } else if (overlap(paddle_rect(outbreak->player), ball_rect(outbreak->ball))) {
+    outbreak->ball->y -= outbreak->ball->velocity_y;
+    outbreak->ball->velocity_y = -outbreak->ball->velocity_y;
   }
 
   if (overlap(paddle_rect(outbreak->player), ball_rect(outbreak->ball))) {
