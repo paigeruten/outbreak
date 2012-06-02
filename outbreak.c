@@ -9,8 +9,8 @@ void outbreak(SDL_Surface * screen) {
   outbreak.ball = make_ball((float)SCREEN_WIDTH / 2.0f - (float)BALL_WIDTH / 2.0f, (float)SCREEN_HEIGHT / 2.0f - (float)BALL_HEIGHT / 2.0f, BALL_WIDTH, BALL_HEIGHT);
   outbreak.quit = FALSE;
 
-  outbreak.ball->velocity_x = 1;
-  outbreak.ball->velocity_y = 1;
+  outbreak.ball->velocity_x = BALL_VELOCITY;
+  outbreak.ball->velocity_y = BALL_VELOCITY;
 
   while (!outbreak.quit) {
     handle_input(&outbreak);
@@ -62,16 +62,31 @@ void handle_input(Outbreak * outbreak) {
 void update_gamestate(Outbreak * outbreak) {
   outbreak->player->x += outbreak->player->velocity_x;
 
-  if (outbreak->player->x < PADDLE_MARGIN_X) {
-    outbreak->player->x = PADDLE_MARGIN_X;
+  if (outbreak->player->x < 0) {
+    outbreak->player->x = 0;
   }
 
-  if (outbreak->player->x > SCREEN_WIDTH - PADDLE_MARGIN_X - outbreak->player->width) {
-    outbreak->player->x = SCREEN_WIDTH - PADDLE_MARGIN_X - outbreak->player->width;
+  if (outbreak->player->x > SCREEN_WIDTH - outbreak->player->width) {
+    outbreak->player->x = SCREEN_WIDTH - outbreak->player->width;
   }
 
   outbreak->ball->x += outbreak->ball->velocity_x;
+  if (outbreak->ball->x < 0) {
+    outbreak->ball->x = 0;
+    outbreak->ball->velocity_x = -outbreak->ball->velocity_x;
+  } else if (outbreak->ball->x > SCREEN_WIDTH - outbreak->ball->width) {
+    outbreak->ball->x = SCREEN_WIDTH - outbreak->ball->width;
+    outbreak->ball->velocity_x = -outbreak->ball->velocity_x;
+  }
+
   outbreak->ball->y += outbreak->ball->velocity_y;
+  if (outbreak->ball->y < 0) {
+    outbreak->ball->y = 0;
+    outbreak->ball->velocity_y = -outbreak->ball->velocity_y;
+  } else if (outbreak->ball->y > SCREEN_HEIGHT - outbreak->ball->height) {
+    outbreak->ball->y = SCREEN_HEIGHT - outbreak->ball->height;
+    outbreak->ball->velocity_y = -outbreak->ball->velocity_y;
+  }
 }
 
 void render(Outbreak * outbreak) {

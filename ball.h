@@ -6,6 +6,8 @@
 #define BALL_WIDTH 5
 #define BALL_HEIGHT 5
 
+#define BALL_VELOCITY 2
+
 #define BALL_COLOR COLOR_WHITE
 
 typedef struct {
