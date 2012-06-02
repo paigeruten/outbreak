@@ -51,6 +51,14 @@ void handle_input(Outbreak * outbreak) {
 
 void update_gamestate(Outbreak * outbreak) {
   outbreak->player->x += outbreak->player->velocity_x;
+
+  if (outbreak->player->x < PADDLE_MARGIN_X) {
+    outbreak->player->x = PADDLE_MARGIN_X;
+  }
+
+  if (outbreak->player->x > SCREEN_WIDTH - PADDLE_MARGIN_X - outbreak->player->width) {
+    outbreak->player->x = SCREEN_WIDTH - PADDLE_MARGIN_X - outbreak->player->width;
+  }
 }
 
 void render(Outbreak * outbreak) {
