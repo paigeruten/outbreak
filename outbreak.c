@@ -2,23 +2,37 @@
 #include "palette.h"
 
 void outbreak(SDL_Surface * screen) {
-  int quit = FALSE;
+  Outbreak outbreak;
+  outbreak.screen = screen;
+  outbreak.quit = FALSE;
 
-  SDL_FillRect(screen, NULL, COLOR_WHITE);
-  SDL_UpdateRect(screen, 0, 0, 0, 0);
-
-  while (!quit) {
-    SDL_Event event;
-
-    while (SDL_PollEvent(&event)) {
-      switch(event.type) {
-        case SDL_QUIT:
-          quit = TRUE;
-          break;
-      }
-    }
+  while (!outbreak.quit) {
+    handle_input(&outbreak);
+    update_gamestate(&outbreak);
+    render(&outbreak);
 
     SDL_Delay(1);
   }
+}
+
+void handle_input(Outbreak * outbreak) {
+  SDL_Event event;
+
+  while (SDL_PollEvent(&event)) {
+    switch(event.type) {
+      case SDL_QUIT:
+        outbreak->quit = TRUE;
+        break;
+    }
+  }
+}
+
+void update_gamestate(Outbreak * outbreak) {
+
+}
+
+void render(Outbreak * outbreak) {
+  SDL_FillRect(outbreak->screen, NULL, COLOR_WHITE);
+  SDL_UpdateRect(outbreak->screen, 0, 0, 0, 0);
 }
 

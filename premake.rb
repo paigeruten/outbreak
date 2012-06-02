@@ -4,7 +4,7 @@ O_FILES = C_FILES.map { |s| s[/[^.]+/] + ".o" }
 
 def find_dependencies(file, h_files = [])
   File.readlines(file).each do |line|
-    if line =~ /^#include "([^\/]+\.h)"/ && !h_files.include?($1)
+    if line =~ /^#include "([^"]+\.h)"/ && !h_files.include?($1)
       h_files << $1
       h_files = find_dependencies($1, h_files)
     end

@@ -2,7 +2,7 @@
 #define _main_h
 
 #include <stdlib.h>
-#include "SDL/SDL.h"
+#include <SDL/SDL.h>
 
 #define TRUE 1
 #define FALSE 0
