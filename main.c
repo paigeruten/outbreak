@@ -1,4 +1,5 @@
 #include "main.h"
+#include "palette.h"
 #include "outbreak.h"
 
 int main(int argc, char * argv[]) {
@@ -18,6 +19,9 @@ int main(int argc, char * argv[]) {
     fprintf(stderr, "Can't set %dx%dx%d video mode: %s\n", SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_GetError());
     exit(1);
   }
+
+  // initialize palette
+  init_palette(screen);
 
   // enter the game
   outbreak(screen);

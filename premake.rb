@@ -24,6 +24,9 @@ File.open("Makefile", "w") do |f|
     f << "\tgcc -c #{c_file} -arch i386\n\n"
   end
 
+  f << "premake:\n"
+  f << "\truby premake.rb\n\n"
+
   f << "clean:\n"
   f << "\trm -f *.o outbreak\n"
 end
