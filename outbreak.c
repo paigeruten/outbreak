@@ -85,8 +85,7 @@ void update_gamestate(Outbreak * outbreak) {
     outbreak->ball->y = 0;
     outbreak->ball->velocity_y = -outbreak->ball->velocity_y;
   } else if (outbreak->ball->y > SCREEN_HEIGHT - outbreak->ball->height) {
-    outbreak->ball->y = SCREEN_HEIGHT - outbreak->ball->height;
-    outbreak->ball->velocity_y = -outbreak->ball->velocity_y;
+    outbreak->quit = TRUE;
   }
 
   if (overlap(paddle_rect(outbreak->player), ball_rect(outbreak->ball))) {
