@@ -4,6 +4,7 @@
 void outbreak(SDL_Surface * screen) {
   Outbreak outbreak;
   outbreak.screen = screen;
+  outbreak.player = make_player("Jeremy", SCREEN_WIDTH / 2 - PADDLE_WIDTH / 2, PADDLE_Y, PADDLE_WIDTH, PADDLE_HEIGHT);
   outbreak.quit = FALSE;
 
   while (!outbreak.quit) {
@@ -32,7 +33,12 @@ void update_gamestate(Outbreak * outbreak) {
 }
 
 void render(Outbreak * outbreak) {
-  SDL_FillRect(outbreak->screen, NULL, COLOR_WHITE);
+  // clear screen
+  SDL_FillRect(outbreak->screen, NULL, BACKGROUND_COLOR);
+
+  // draw paddle
+  SDL_FillRect(outbreak->screen, &outbreak->player->paddle, PADDLE_COLOR);
+
   SDL_UpdateRect(outbreak->screen, 0, 0, 0, 0);
 }
 
