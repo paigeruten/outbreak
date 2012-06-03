@@ -30,6 +30,8 @@ typedef struct {
 } Outbreak;
 
 void outbreak(SDL_Surface * screen);
+void add_block(Outbreak * outbreak, Block * block);
+void remove_block(Outbreak * outbreak, Block * block);
 void handle_input(Outbreak * outbreak);
 void update_gamestate(Outbreak * outbreak);
 void render(Outbreak * outbreak);

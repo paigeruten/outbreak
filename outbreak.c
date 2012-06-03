@@ -47,6 +47,27 @@ void outbreak(SDL_Surface * screen) {
   outbreak.player = NULL;
 }
 
+void add_block(Outbreak * outbreak, Block * block) {
+  if (outbreak->num_blocks < MAX_BLOCKS) {
+    outbreak->blocks[outbreak->num_blocks] = block;
+    outbreak->num_blocks++;
+  }
+}
+
+void remove_block(Outbreak * outbreak, Block * block) {
+  int i;
+  for (i = 0; i < outbreak->num_blocks; i++) {
+    if (outbreak->blocks[i] == block) {
+      int j;
+      for (j = i; j < outbreak->num_blocks - 1; j++) {
+        outbreak->blocks[j] = outbreak->blocks[j + 1];
+      }
+      outbreak->num_blocks--;
+      break;
+    }
+  }
+}
+
 void handle_input(Outbreak * outbreak) {
   SDL_Event event;
 
@@ -100,6 +121,16 @@ void update_gamestate(Outbreak * outbreak) {
   } else if (overlap(paddle_rect(outbreak->player), ball_rect(outbreak->ball))) {
     outbreak->ball->x -= outbreak->ball->velocity_x;
     outbreak->ball->velocity_x = -outbreak->ball->velocity_x;
+  } else {
+    int i;
+    for (i = 0; i < outbreak->num_blocks; i++) {
+      if (overlap(ball_rect(outbreak->ball), block_rect(outbreak->blocks[i]))) {
+        remove_block(outbreak, outbreak->blocks[i]);
+        outbreak->ball->x -= outbreak->ball->velocity_x;
+        outbreak->ball->velocity_x = -outbreak->ball->velocity_x;
+        break;
+      }
+    }
   }
 
   outbreak->ball->y += outbreak->ball->velocity_y;
@@ -111,10 +142,16 @@ void update_gamestate(Outbreak * outbreak) {
   } else if (overlap(paddle_rect(outbreak->player), ball_rect(outbreak->ball))) {
     outbreak->ball->y -= outbreak->ball->velocity_y;
     outbreak->ball->velocity_y = -outbreak->ball->velocity_y;
-  }
-
-  if (overlap(paddle_rect(outbreak->player), ball_rect(outbreak->ball))) {
-    outbreak->ball->velocity_y = -outbreak->ball->velocity_y;
+  } else {
+    int i;
+    for (i = 0; i < outbreak->num_blocks; i++) {
+      if (overlap(ball_rect(outbreak->ball), block_rect(outbreak->blocks[i]))) {
+        remove_block(outbreak, outbreak->blocks[i]);
+        outbreak->ball->y -= outbreak->ball->velocity_y;
+        outbreak->ball->velocity_y = -outbreak->ball->velocity_y;
+        break;
+      }
+    }
   }
 }
 
