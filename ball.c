@@ -28,4 +28,3 @@ SDL_Rect ball_rect(Ball * ball) {
 
   return b;
 }
-

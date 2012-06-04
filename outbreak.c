@@ -153,6 +153,10 @@ void update_gamestate(Outbreak * outbreak) {
       }
     }
   }
+
+  // gradually speed up ball
+  outbreak->ball->velocity_x += outbreak->ball->velocity_x * BALL_VELOCITY_PERCENT_INCREASE;
+  outbreak->ball->velocity_y += outbreak->ball->velocity_y * BALL_VELOCITY_PERCENT_INCREASE;
 }
 
 void render(Outbreak * outbreak) {

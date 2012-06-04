@@ -11,7 +11,7 @@
 
 #define PADDLE_COLOR COLOR_WHITE
 
-#define PADDLE_VELOCITY 2.5
+#define PADDLE_VELOCITY 5
 
 typedef struct {
   char * name;
