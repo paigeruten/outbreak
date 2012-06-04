@@ -2,18 +2,14 @@
 #define _block_h
 
 #include "main.h"
+#include "object.h"
 #include "palette.h"
 
 typedef struct {
-  int x;
-  int y;
-  int width;
-  int height;
-  Color color;
+  Object object;
 } Block;
 
-Block * make_block(int x, int y, int width, int height, Color color);
+Block * make_block(float x, float y, float width, float height, Color color);
 void destroy_block(Block * block);
-SDL_Rect block_rect(Block * block);
 
 #endif

@@ -2,19 +2,16 @@
 #define _player_h
 
 #include "main.h"
+#include "object.h"
+#include "palette.h"
 
 typedef struct {
+  Object object;
   char * name;
-  float x;
-  float y;
-  float velocity_x;
-  int width, height;
 } Player;
 
-Player * make_player(const char * name, float x, float y, int width, int height);
+Player * make_player(const char * name, float x, float y, float width, float height, Color color);
 void destroy_player(Player * player);
-SDL_Rect paddle_rect(Player * player);
-void move_paddle(Player * player);
 
 #endif
 
