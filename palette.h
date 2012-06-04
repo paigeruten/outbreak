@@ -9,6 +9,9 @@ typedef enum {
   COLOR_RED,
   COLOR_BLUE,
   COLOR_ORANGE,
+  COLOR_YELLOW,
+  COLOR_GREEN,
+  COLOR_MAGENTA,
 
   NUM_COLORS
 } Color;

@@ -115,7 +115,10 @@ void update_gamestate(Outbreak * outbreak) {
     int i;
     for (i = 0; i < outbreak->num_blocks; i++) {
       if (object_collision(outbreak->ball, outbreak->blocks[i])) {
-        remove_block(outbreak, outbreak->blocks[i]);
+        hit_block(outbreak->blocks[i]);
+        if (outbreak->blocks[i]->health == 0) {
+          remove_block(outbreak, outbreak->blocks[i]);
+        }
         object_rollback_x(outbreak->ball);
         object_bounce_x(outbreak->ball);
         break;
@@ -137,7 +140,10 @@ void update_gamestate(Outbreak * outbreak) {
     int i;
     for (i = 0; i < outbreak->num_blocks; i++) {
       if (object_collision(outbreak->ball, outbreak->blocks[i])) {
-        remove_block(outbreak, outbreak->blocks[i]);
+        hit_block(outbreak->blocks[i]);
+        if (outbreak->blocks[i]->health == 0) {
+          remove_block(outbreak, outbreak->blocks[i]);
+        }
         object_rollback_y(outbreak->ball);
         object_bounce_y(outbreak->ball);
         break;
