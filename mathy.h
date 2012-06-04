@@ -4,5 +4,6 @@
 #include "main.h"
 
 int overlap(SDL_Rect a, SDL_Rect b);
+float square(float a);
 
 #endif

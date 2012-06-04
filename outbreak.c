@@ -142,6 +142,14 @@ void update_gamestate(Outbreak * outbreak) {
   } else if (overlap(paddle_rect(outbreak->player), ball_rect(outbreak->ball))) {
     outbreak->ball->y -= outbreak->ball->velocity_y;
     outbreak->ball->velocity_y = -outbreak->ball->velocity_y;
+
+    float ball_angle = atan2(outbreak->ball->velocity_y, outbreak->ball->velocity_x);
+    float ball_magnitude = sqrt(square(outbreak->ball->velocity_y) + square(outbreak->ball->velocity_x));
+
+    ball_angle += ((outbreak->ball->x - outbreak->player->x) - (float)(outbreak->player->width + outbreak->ball->width) / 2.0f) / 64.0f;
+
+    outbreak->ball->velocity_x = cos(ball_angle) * ball_magnitude;
+    outbreak->ball->velocity_y = sin(ball_angle) * ball_magnitude;
   } else {
     int i;
     for (i = 0; i < outbreak->num_blocks; i++) {

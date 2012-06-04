@@ -32,4 +32,3 @@ SDL_Rect paddle_rect(Player * player) {
 
   return paddle;
 }
-

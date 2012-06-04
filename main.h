@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include <SDL/SDL.h>
 
 #define TRUE 1
