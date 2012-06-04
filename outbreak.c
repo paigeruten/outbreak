@@ -1,7 +1,6 @@
 #include "outbreak.h"
 #include "palette.h"
 #include "mathy.h"
-#include "controls.h"
 
 void outbreak(SDL_Surface * screen) {
   Outbreak outbreak;
