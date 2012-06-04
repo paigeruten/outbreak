@@ -2,6 +2,8 @@
 #include "palette.h"
 #include "outbreak.h"
 
+const SDL_Rect SCREEN_RECT = (SDL_Rect){ 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+
 int main(int argc, char * argv[]) {
   // initialize SDL
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {

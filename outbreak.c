@@ -1,28 +1,11 @@
 #include "outbreak.h"
 #include "palette.h"
 #include "mathy.h"
+#include "level.h"
 
 void outbreak(SDL_Surface * screen) {
   Outbreak outbreak;
-  outbreak.screen = screen;
-  outbreak.player = make_player("Jeremy", (float)SCREEN_WIDTH / 2.0f - (float)PADDLE_WIDTH / 2.0f, PADDLE_Y, PADDLE_WIDTH, PADDLE_HEIGHT);
-  outbreak.ball = make_ball(outbreak.player->x + (float)outbreak.player->width / 2.0f - (float)BALL_WIDTH / 2.0f, outbreak.player->y - BALL_HEIGHT - 1, BALL_WIDTH, BALL_HEIGHT);
-  outbreak.quit = FALSE;
-
-  outbreak.ball->velocity_x = BALL_VELOCITY;
-  outbreak.ball->velocity_y = BALL_VELOCITY;
-
-  outbreak.num_blocks = 0;
-
-  // make a simple wall-of-bricks level
-  int block_x;
-  int block_y;
-  for (block_y = BLOCKS_Y; block_y < BLOCKS_Y + (BLOCK_HEIGHT + BLOCK_SPACING) * BLOCK_ROWS && outbreak.num_blocks < MAX_BLOCKS; block_y += BLOCK_HEIGHT + BLOCK_SPACING) {
-    for (block_x = BLOCKS_X; block_x < SCREEN_WIDTH - BLOCK_WIDTH - BLOCKS_X && outbreak.num_blocks < MAX_BLOCKS; block_x += BLOCK_WIDTH + BLOCK_SPACING) {
-      outbreak.blocks[outbreak.num_blocks] = make_block(block_x, block_y, BLOCK_WIDTH, BLOCK_HEIGHT, BLOCK_COLOR);
-      outbreak.num_blocks++;
-    }
-  }
+  init_outbreak(&outbreak, screen);
 
   while (!outbreak.quit) {
     handle_input(&outbreak);
@@ -32,18 +15,34 @@ void outbreak(SDL_Surface * screen) {
     SDL_Delay(1);
   }
 
+  cleanup_outbreak(&outbreak);
+}
+
+void init_outbreak(Outbreak * outbreak, SDL_Surface * screen) {
+  outbreak->screen = screen;
+  outbreak->player = make_player("Jeremy", INITIAL_PADDLE_X, INITIAL_PADDLE_Y, INITIAL_PADDLE_WIDTH, INITIAL_PADDLE_HEIGHT);
+  outbreak->ball = make_ball(INITIAL_BALL_X, INITIAL_BALL_Y, INITIAL_BALL_WIDTH, INITIAL_BALL_HEIGHT);
+  outbreak->quit = FALSE;
+
+  outbreak->ball->velocity_x = INITIAL_BALL_VELOCITY;
+  outbreak->ball->velocity_y = INITIAL_BALL_VELOCITY;
+
+  outbreak->num_blocks = generate_level(outbreak->blocks, MAX_BLOCKS);
+}
+
+void cleanup_outbreak(Outbreak * outbreak) {
   int i;
-  for (i = 0; i < outbreak.num_blocks; i++) {
-    destroy_block(outbreak.blocks[i]);
-    outbreak.blocks[i] = NULL;
+  for (i = 0; i < outbreak->num_blocks; i++) {
+    destroy_block(outbreak->blocks[i]);
+    outbreak->blocks[i] = NULL;
   }
-  outbreak.num_blocks = 0;
+  outbreak->num_blocks = 0;
 
-  destroy_ball(outbreak.ball);
-  outbreak.ball = NULL;
+  destroy_ball(outbreak->ball);
+  outbreak->ball = NULL;
 
-  destroy_player(outbreak.player);
-  outbreak.player = NULL;
+  destroy_player(outbreak->player);
+  outbreak->player = NULL;
 }
 
 void add_block(Outbreak * outbreak, Block * block) {
@@ -100,70 +99,44 @@ void handle_input(Outbreak * outbreak) {
 }
 
 void update_gamestate(Outbreak * outbreak) {
-  outbreak->player->x += outbreak->player->velocity_x;
+  move_paddle(outbreak->player);
 
-  if (outbreak->player->x < 0) {
-    outbreak->player->x = 0;
-  }
-
-  if (outbreak->player->x > SCREEN_WIDTH - outbreak->player->width) {
-    outbreak->player->x = SCREEN_WIDTH - outbreak->player->width;
-  }
-
-  outbreak->ball->x += outbreak->ball->velocity_x;
-  if (outbreak->ball->x < 0) {
-    outbreak->ball->x = 0;
-    outbreak->ball->velocity_x = -outbreak->ball->velocity_x;
-  } else if (outbreak->ball->x > SCREEN_WIDTH - outbreak->ball->width) {
-    outbreak->ball->x = SCREEN_WIDTH - outbreak->ball->width;
-    outbreak->ball->velocity_x = -outbreak->ball->velocity_x;
-  } else if (overlap(paddle_rect(outbreak->player), ball_rect(outbreak->ball))) {
-    outbreak->ball->x -= outbreak->ball->velocity_x;
-    outbreak->ball->velocity_x = -outbreak->ball->velocity_x;
+  move_ball_x(outbreak->ball);
+  if (overlap(paddle_rect(outbreak->player), ball_rect(outbreak->ball))) {
+    move_back_ball_x(outbreak->ball);
+    bounce_ball_x(outbreak->ball);
   } else {
     int i;
     for (i = 0; i < outbreak->num_blocks; i++) {
       if (overlap(ball_rect(outbreak->ball), block_rect(outbreak->blocks[i]))) {
         remove_block(outbreak, outbreak->blocks[i]);
-        outbreak->ball->x -= outbreak->ball->velocity_x;
-        outbreak->ball->velocity_x = -outbreak->ball->velocity_x;
+        move_back_ball_x(outbreak->ball);
+        bounce_ball_x(outbreak->ball);
         break;
       }
     }
   }
 
-  outbreak->ball->y += outbreak->ball->velocity_y;
-  if (outbreak->ball->y < 0) {
-    outbreak->ball->y = 0;
-    outbreak->ball->velocity_y = -outbreak->ball->velocity_y;
-  } else if (outbreak->ball->y > SCREEN_HEIGHT - outbreak->ball->height) {
+  move_ball_y(outbreak->ball);
+  if (outbreak->ball->y >= SCREEN_HEIGHT) {
     outbreak->quit = TRUE;
   } else if (overlap(paddle_rect(outbreak->player), ball_rect(outbreak->ball))) {
-    outbreak->ball->y -= outbreak->ball->velocity_y;
-    outbreak->ball->velocity_y = -outbreak->ball->velocity_y;
-
-    float ball_angle = atan2(outbreak->ball->velocity_y, outbreak->ball->velocity_x);
-    float ball_magnitude = sqrt(square(outbreak->ball->velocity_y) + square(outbreak->ball->velocity_x));
-
-    ball_angle += ((outbreak->ball->x - outbreak->player->x) - (float)(outbreak->player->width + outbreak->ball->width) / 2.0f) / 64.0f;
-
-    outbreak->ball->velocity_x = cos(ball_angle) * ball_magnitude;
-    outbreak->ball->velocity_y = sin(ball_angle) * ball_magnitude;
+    move_back_ball_y(outbreak->ball);
+    bounce_ball_y(outbreak->ball);
+    adjust_ball_angle(outbreak->ball, ((outbreak->ball->x - outbreak->player->x) - (outbreak->player->width + outbreak->ball->width) / 2.0f) * PADDLE_CURVINESS);
   } else {
     int i;
     for (i = 0; i < outbreak->num_blocks; i++) {
       if (overlap(ball_rect(outbreak->ball), block_rect(outbreak->blocks[i]))) {
         remove_block(outbreak, outbreak->blocks[i]);
-        outbreak->ball->y -= outbreak->ball->velocity_y;
-        outbreak->ball->velocity_y = -outbreak->ball->velocity_y;
+        move_back_ball_y(outbreak->ball);
+        bounce_ball_y(outbreak->ball);
         break;
       }
     }
   }
 
-  // gradually speed up ball
-  outbreak->ball->velocity_x += outbreak->ball->velocity_x * BALL_VELOCITY_PERCENT_INCREASE;
-  outbreak->ball->velocity_y += outbreak->ball->velocity_y * BALL_VELOCITY_PERCENT_INCREASE;
+  ball_increase_speed(outbreak->ball);
 }
 
 void render(Outbreak * outbreak) {

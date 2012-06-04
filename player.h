@@ -14,6 +14,7 @@ typedef struct {
 Player * make_player(const char * name, float x, float y, int width, int height);
 void destroy_player(Player * player);
 SDL_Rect paddle_rect(Player * player);
+void move_paddle(Player * player);
 
 #endif
 

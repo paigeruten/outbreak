@@ -32,3 +32,12 @@ SDL_Rect paddle_rect(Player * player) {
 
   return paddle;
 }
+
+void move_paddle(Player * player) {
+  player->x += player->velocity_x;
+
+  // check for paddle collisions with edges of screen
+  if (!contains(SCREEN_RECT, paddle_rect(player))) {
+    player->x = (player->x < SCREEN_WIDTH / 2) ? 0 : SCREEN_WIDTH - player->width;
+  }
+}

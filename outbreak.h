@@ -16,6 +16,8 @@ typedef struct {
 } Outbreak;
 
 void outbreak(SDL_Surface * screen);
+void init_outbreak(Outbreak * outbreak, SDL_Surface * screen);
+void cleanup_outbreak(Outbreak * outbreak);
 void add_block(Outbreak * outbreak, Block * block);
 void remove_block(Outbreak * outbreak, Block * block);
 void handle_input(Outbreak * outbreak);
