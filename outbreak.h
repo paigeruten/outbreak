@@ -12,6 +12,7 @@ typedef struct {
   Player * player;
   Ball * ball;
   int num_blocks;
+  int paused;
   int quit;
 } Outbreak;
 

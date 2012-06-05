@@ -1,12 +1,12 @@
 #include "ball.h"
 
-Ball * make_ball(float x, float y, float width, float height, Color color) {
+Ball * make_ball(float x, float y, float width, float height, SDL_Surface * image) {
   Ball * ball = (Ball *)malloc(sizeof(Ball));
   init_object(ball);
 
   set_object_position(ball, x, y);
   set_object_size(ball, width, height);
-  set_object_color(ball, color);
+  set_object_image(ball, image);
 
   return ball;
 }

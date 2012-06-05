@@ -1,6 +1,7 @@
 #include "main.h"
 #include "palette.h"
 #include "outbreak.h"
+#include "resources.h"
 
 const SDL_Rect SCREEN_RECT = (SDL_Rect){ 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 
@@ -25,8 +26,15 @@ int main(int argc, char * argv[]) {
   // initialize palette
   init_palette(screen);
 
+  // load resources
+  load_resources("resources/");
+
   // enter the game
   outbreak(screen);
+
+  // cleanup
+  SDL_FreeSurface(screen);
+  screen = NULL;
 
   return 0;
 }

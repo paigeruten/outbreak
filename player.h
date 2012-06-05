@@ -10,7 +10,7 @@ typedef struct {
   char * name;
 } Player;
 
-Player * make_player(const char * name, float x, float y, float width, float height, Color color);
+Player * make_player(const char * name, float x, float y, float width, float height, SDL_Surface * image);
 void destroy_player(Player * player);
 
 #endif

@@ -1,6 +1,6 @@
 #include "player.h"
 
-Player * make_player(const char * name, float x, float y, float width, float height, Color color) {
+Player * make_player(const char * name, float x, float y, float width, float height, SDL_Surface * image) {
   Player * player = (Player *)malloc(sizeof(Player));
   init_object(player);
 
@@ -9,7 +9,7 @@ Player * make_player(const char * name, float x, float y, float width, float hei
 
   set_object_position(player, x, y);
   set_object_size(player, width, height);
-  set_object_color(player, color);
+  set_object_image(player, image);
 
   return player;
 }

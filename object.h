@@ -10,6 +10,7 @@ typedef struct {
   float acceleration_x, acceleration_y;
   float width, height;
   Color color;
+  SDL_Surface * image;
 } Object;
 
 // getters
@@ -22,6 +23,7 @@ float object_acceleration_y(void * object);
 float object_width(void * object);
 float object_height(void * object);
 Color object_color(void * object);
+SDL_Surface * object_image(void * object);
 float object_angle(void * object);
 float object_speed(void * object);
 Direction object_direction_x(void * object);
@@ -42,6 +44,7 @@ void set_object_width(void * object, float width);
 void set_object_height(void * object, float height);
 void set_object_size(void * object, float width, float height);
 void set_object_color(void * object, Color color);
+void set_object_image(void * object, SDL_Surface * image);
 void set_object_angle(void * object, float angle);
 void set_object_speed(void * object, float speed);
 void set_object_vector(void * object, float angle, float speed);

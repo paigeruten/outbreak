@@ -39,6 +39,10 @@ Color object_color(void * object) {
   return ((Object *)object)->color;
 }
 
+SDL_Surface * object_image(void * object) {
+  return ((Object *)object)->image;
+}
+
 float object_angle(void * object) {
   return atan2(object_velocity_y(object), object_velocity_x(object));
 }
@@ -75,6 +79,7 @@ void init_object(void * object) {
   set_object_acceleration(object, 0, 0);
   set_object_size(object, 1, 1);
   set_object_color(object, BACKGROUND_COLOR);
+  set_object_image(object, NULL);
 }
 
 void set_object_x(void * object, float x) {
@@ -130,7 +135,12 @@ void set_object_size(void * object, float width, float height) {
 }
 
 void set_object_color(void * object, Color color) {
+  set_object_image(object, NULL);
   ((Object *)object)->color = color;
+}
+
+void set_object_image(void * object, SDL_Surface * image) {
+  ((Object *)object)->image = image;
 }
 
 void set_object_angle(void * object, float angle) {
@@ -161,7 +171,12 @@ SDL_Rect object_rect(void * object) {
 
 void object_render(void * object, SDL_Surface * surface) {
   SDL_Rect rect = object_rect(object);
-  SDL_FillRect(surface, &rect, object_color(object));
+
+  if (object_image(object) == NULL) {
+    SDL_FillRect(surface, &rect, object_color(object));
+  } else {
+    SDL_BlitSurface(object_image(object), NULL, surface, &rect);
+  }
 }
 
 int object_collision(void * object1, void * object2) {

@@ -11,6 +11,8 @@ void init_palette(SDL_Surface * screen) {
   colors[COLOR_YELLOW] = (SDL_Color){ 0xFF, 0xFF, 0x00 };
   colors[COLOR_GREEN] = (SDL_Color){ 0x00, 0xFF, 0x00 };
   colors[COLOR_MAGENTA] = (SDL_Color){ 0xFF, 0x00, 0xFF };
+  colors[COLOR_LIGHTGRAY] = (SDL_Color){ 0xCC, 0xCC, 0xCC };
+  colors[COLOR_DARKGRAY] = (SDL_Color){ 0x66, 0x66, 0x66 };
 
   SDL_SetColors(screen, colors, 0, NUM_COLORS);
 }

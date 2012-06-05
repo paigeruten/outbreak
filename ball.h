@@ -9,7 +9,7 @@ typedef struct {
   Object object;
 } Ball;
 
-Ball * make_ball(float x, float y, float width, float height, Color color);
+Ball * make_ball(float x, float y, float width, float height, SDL_Surface * image);
 void destroy_ball(Ball * ball);
 
 #endif
