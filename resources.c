@@ -9,6 +9,15 @@ void load_resources(const char * path_to_resources) {
   if ((resources.ball_bmp = load_image(path_to_resources, "ball.bmp")) == NULL) {
     error_loading_resource("ball.bmp");
   }
+  if ((resources.block_bmp[0] = load_image(path_to_resources, "block_1.bmp")) == NULL) {
+    error_loading_resource("block_1.bmp");
+  }
+  if ((resources.block_bmp[1] = load_image(path_to_resources, "block_2.bmp")) == NULL) {
+    error_loading_resource("block_2.bmp");
+  }
+  if ((resources.block_bmp[2] = load_image(path_to_resources, "block_3.bmp")) == NULL) {
+    error_loading_resource("block_3.bmp");
+  }
 }
 
 void error_loading_resource(const char * file) {

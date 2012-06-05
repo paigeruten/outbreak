@@ -6,6 +6,7 @@
 typedef struct {
   SDL_Surface * paddle_bmp;
   SDL_Surface * ball_bmp;
+  SDL_Surface * block_bmp[BLOCK_MAX_HEALTH];
 } Resources;
 
 extern Resources resources;

@@ -74,6 +74,8 @@ void handle_input(Outbreak * outbreak) {
   while (SDL_PollEvent(&event)) {
     if (event.type == SDL_KEYDOWN && event.key.keysym.sym == CONTROLS_PAUSE) {
       outbreak->paused = !outbreak->paused;
+    } else if (event.type == SDL_QUIT) {
+      outbreak->quit = TRUE;
     }
 
     if (!outbreak->paused) {
@@ -96,10 +98,6 @@ void handle_input(Outbreak * outbreak) {
               set_object_velocity_x(outbreak->player, 0);
             }
           }
-          break;
-
-        case SDL_QUIT:
-          outbreak->quit = TRUE;
           break;
       }
     }

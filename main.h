@@ -37,7 +37,7 @@ extern const SDL_Rect SCREEN_RECT;
 #define BLOCK_SPACING 2
 #define BLOCKS_X 64
 #define BLOCKS_Y 64
-#define BLOCK_MAX_HEALTH 6
+#define BLOCK_MAX_HEALTH 3
 
 // paddle
 #define INITIAL_PADDLE_WIDTH 64

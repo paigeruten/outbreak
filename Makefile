@@ -4,7 +4,7 @@ outbreak: ball.o block.o level.o main.o mathy.o object.o outbreak.o palette.o pl
 ball.o: ball.c ball.h main.h palette.h object.h
 	gcc -c ball.c -arch i386
 
-block.o: block.c block.h main.h palette.h object.h
+block.o: block.c block.h main.h palette.h object.h resources.h
 	gcc -c block.c -arch i386
 
 level.o: level.c level.h main.h palette.h block.h object.h
