@@ -99,6 +99,14 @@ void handle_input(Outbreak * outbreak) {
             }
           }
           break;
+
+        case SDL_MOUSEMOTION:
+          set_object_velocity_x(outbreak->player, 0);
+          set_object_x(outbreak->player, event.motion.x - object_width(outbreak->player) / 2);
+          if (object_offscreen(outbreak->player)) {
+            set_object_x(outbreak->player, object_x(outbreak->player) < 0 ? 0 : SCREEN_WIDTH - object_width(outbreak->player));
+          }
+          break;
       }
     }
   }
