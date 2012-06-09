@@ -27,7 +27,7 @@ void init_outbreak(Outbreak * outbreak, SDL_Surface * screen) {
   outbreak->paused = FALSE;
   outbreak->quit = FALSE;
 
-  set_object_vector(outbreak->ball, INITIAL_BALL_ANGLE, INITIAL_BALL_SPEED);
+  magnetize_ball(outbreak->ball);
 
   outbreak->num_blocks = generate_level(outbreak->blocks, MAX_BLOCKS);
 }
@@ -85,6 +85,8 @@ void handle_input(Outbreak * outbreak) {
             set_object_velocity_x(outbreak->player, PADDLE_VELOCITY);
           } else if (event.key.keysym.sym == CONTROLS_LEFT) {
             set_object_velocity_x(outbreak->player, -PADDLE_VELOCITY);
+          } else if (event.key.keysym.sym == CONTROLS_LAUNCH) {
+            launch_ball(outbreak->ball);
           }
           break;
 
@@ -97,6 +99,12 @@ void handle_input(Outbreak * outbreak) {
             if (object_direction_x(outbreak->player) == DIRECTION_LEFT) {
               set_object_velocity_x(outbreak->player, 0);
             }
+          }
+          break;
+
+        case SDL_MOUSEBUTTONDOWN:
+          if (event.button.button == MOUSE_CONTROLS_LAUNCH) {
+            launch_ball(outbreak->ball);
           }
           break;
 
@@ -117,6 +125,9 @@ void update_gamestate(Outbreak * outbreak) {
     object_update_position(outbreak->player);
     if (object_offscreen(outbreak->player)) {
       set_object_x(outbreak->player, (object_direction_x(outbreak->player) == DIRECTION_LEFT) ? 0 : SCREEN_WIDTH - object_width(outbreak->player));
+    }
+    if (ball_magnetized(outbreak->ball)) {
+      set_object_x(outbreak->ball, object_x(outbreak->player) + (object_width(outbreak->player) - object_width(outbreak->ball)) / 2.0f);
     }
 
     object_update_x(outbreak->ball);
@@ -166,7 +177,9 @@ void update_gamestate(Outbreak * outbreak) {
       }
     }
 
-    set_object_speed(outbreak->ball, object_speed(outbreak->ball) + BALL_ACCELERATION);
+    if (!ball_magnetized(outbreak->ball)) {
+      set_object_speed(outbreak->ball, object_speed(outbreak->ball) + BALL_ACCELERATION);
+    }
   }
 }
 
