@@ -150,7 +150,7 @@ void update_gamestate(Outbreak * outbreak) {
     } else if (object_collision(outbreak->player, outbreak->ball)) {
       object_rollback_y(outbreak->ball);
       object_bounce_y(outbreak->ball);
-      set_object_angle(outbreak->ball, object_angle(outbreak->ball) + ((object_x(outbreak->ball) - object_x(outbreak->player)) - (object_width(outbreak->player) + object_width(outbreak->ball)) / 2.0f) * PADDLE_CURVINESS);
+      set_object_angle(outbreak->ball, object_angle(outbreak->ball) - ((object_x(outbreak->ball) - object_x(outbreak->player)) - (object_width(outbreak->player) + object_width(outbreak->ball)) / 2.0f) * PADDLE_CURVINESS);
     } else {
       int i;
       for (i = 0; i < outbreak->num_blocks; i++) {

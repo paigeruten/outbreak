@@ -44,7 +44,7 @@ SDL_Surface * object_image(void * object) {
 }
 
 float object_angle(void * object) {
-  return atan2(object_velocity_y(object), object_velocity_x(object));
+  return atan2(-object_velocity_y(object), object_velocity_x(object));
 }
 
 float object_speed(void * object) {
@@ -153,7 +153,7 @@ void set_object_speed(void * object, float speed) {
 
 void set_object_vector(void * object, float angle, float speed) {
   set_object_velocity_x(object, cos(angle) * speed);
-  set_object_velocity_y(object, sin(angle) * speed);
+  set_object_velocity_y(object, -sin(angle) * speed);
 }
 
 // helpers and predicates
